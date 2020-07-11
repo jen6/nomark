@@ -8,8 +8,8 @@
 # Usage: NOTION_TOKEN=<token> ./notion.py <page-url>
 #
 
+from notion.repository import NotionRepository
 from notion.model import ExportedURLPayload
-from typing import Dict
 from constants.const import NOTION_TOKEN_COOKIE_STR, NOTION_TOKEN_INVALID
 import json
 import re
@@ -18,15 +18,12 @@ from time import sleep
 
 
 class NotionService(object):
-    _cookie: Dict[str, str]
-
-    def __init__(self, notion_cookie_token: str):
+    def __init__(self, notion_cookie_token: str, notion_repo: NotionRepository):
         if notion_cookie_token == "":
             raise ValueError(NOTION_TOKEN_INVALID)
 
-        self._cookie = {
-            NOTION_TOKEN_COOKIE_STR: notion_cookie_token,
-        }
+        self._notion_repo: NotionRepository = notion_repo
+        self._notion_token: str = notion_cookie_token
 
     def _url_to_block_id(self, page_url: str) -> str:
         matched = re.match(r"^https://www.notion.so/[^/]+/([0-9A-Fa-f]+)$", page_url)
@@ -36,19 +33,11 @@ class NotionService(object):
         chunks = [s[4 * i : 4 * i + 4] for i in range(0, len(s) // 4)]
         return "{}{}-{}-{}-{}-{}{}{}".format(*chunks)
 
-    def _get_task_status(self, task_id):
-        payload = {
-            "taskIds": [task_id],
-        }
-        r = requests.post(
-            "https://www.notion.so/api/v3/getTasks", cookies=self._cookie, json=payload,
-        )
-        result = r.json()["results"][0]
-        return (result["state"], result.get("status", None))
-
     def _wait_for_task(self, task_id):
         for _ in range(5):
-            (state, status) = self._get_task_status(task_id)
+            (state, status) = self._notion_repo.get_export_task(
+                token=self._notion_token, task_id=task_id
+            )
             if state in ["not_started", "in_progress"]:
                 sleep(1)
             elif state == "success":
@@ -60,16 +49,10 @@ class NotionService(object):
 
     def get_exported_url(self, page_url: str):
         block_id = self._url_to_block_id(page_url)
-        payload = ExportedURLPayload(block_id).to_dict()
-        r = requests.post(
-            "https://www.notion.so/api/v3/enqueueTask",
-            cookies=self._cookie,
-            json=payload,
-        )
-        task_id = r.json().get("taskId", None)
-        if not task_id:
-            raise Exception("Could not get the scheduled task id: {}".format(r))
 
+        task_id = self._notion_repo.enqueue_export_task(
+            token=self._notion_token, payload=ExportedURLPayload(block_id)
+        )
         result = self._wait_for_task(task_id)
         url = result.get("exportURL", None)
         if not url:

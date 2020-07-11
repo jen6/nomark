@@ -30,7 +30,7 @@ class ExportedURLPayload:
                 "eventName": "exportBlock",
                 "request": {
                     "blockId": self._block_id,
-                    "recursive": self._block_id,
+                    "recursive": self._recursive,
                     "exportOptions": asdict(self._export_option),
                 },
             }
