@@ -74,12 +74,6 @@ def get_exported_url(block_id):
             },
         }
     }
-    payload = {
-        "task": {
-            "eventName": "exportBlock",
-            "request": {"blockId": block_id, "recursive": False, "timeZone": "UTC",},
-        },
-    }
     r = requests.post(
         "https://www.notion.so/api/v3/enqueueTask", cookies=cookies, json=payload,
     )
