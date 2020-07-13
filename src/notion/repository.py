@@ -1,14 +1,15 @@
+import requests
 from requests.sessions import Session
 from src.constants.const import NOTION_TOKEN_COOKIE_STR
-import requests
 from src.notion.model import ExportedURLPayload
-from typing import Dict, Optional
+from typing import Optional
 
 
 class NotionRepository:
-    def __init__(
-        self, requests_session: Optional[requests.Session] = None, timeout: int = 10
-    ):
+    ENQUEUE_TASK_URL: str = "https://www.notion.so/api/v3/enqueueTask"
+    GET_TASK_URL: str = "https://www.notion.so/api/v3/getTasks"
+
+    def __init__(self, requests_session: Optional[Session] = None, timeout: int = 10):
         self._session = requests_session or requests.session()
         self._timeout = timeout
 
@@ -17,7 +18,7 @@ class NotionRepository:
 
     def enqueue_export_task(self, token: str, payload: ExportedURLPayload):
         resp = self._session.post(
-            "https://www.notion.so/api/v3/enqueueTask",
+            self.ENQUEUE_TASK_URL,
             cookies={NOTION_TOKEN_COOKIE_STR: token,},
             json=payload.to_dict(),
             timeout=self._timeout,
@@ -32,7 +33,7 @@ class NotionRepository:
             "taskIds": [task_id],
         }
         resp = self._session.post(
-            "https://www.notion.so/api/v3/getTasks",
+            self.GET_TASK_URL,
             cookies={NOTION_TOKEN_COOKIE_STR: token,},
             json=payload,
             timeout=self._timeout,
