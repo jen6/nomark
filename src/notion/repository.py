@@ -1,3 +1,4 @@
+from requests.sessions import Session
 from src.constants.const import NOTION_TOKEN_COOKIE_STR
 import requests
 from src.notion.model import ExportedURLPayload
@@ -10,6 +11,9 @@ class NotionRepository:
     ):
         self._session = requests_session or requests.session()
         self._timeout = timeout
+
+    def set_session(self, session: requests.Session):
+        self._session = session
 
     def enqueue_export_task(self, token: str, payload: ExportedURLPayload):
         resp = self._session.post(
