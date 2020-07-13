@@ -1,6 +1,6 @@
-from constants.const import NOTION_TOKEN_COOKIE_STR
+from src.constants.const import NOTION_TOKEN_COOKIE_STR
 import requests
-from notion.model import ExportedURLPayload
+from src.notion.model import ExportedURLPayload
 from typing import Dict, Optional
 
 

@@ -8,9 +8,9 @@
 # Usage: NOTION_TOKEN=<token> ./notion.py <page-url>
 #
 
-from notion.repository import NotionRepository
-from notion.model import ExportedURLPayload
-from constants.const import NOTION_TOKEN_COOKIE_STR, NOTION_TOKEN_INVALID
+from src.notion.repository import NotionRepository
+from src.notion.model import ExportedURLPayload
+from src.constants.const import NOTION_TOKEN_COOKIE_STR, NOTION_TOKEN_INVALID
 import json
 import re
 import requests

@@ -1,9 +1,9 @@
-from notion.repository import NotionRepository
+from src.notion.repository import NotionRepository
 import os
 import sys
 
-from config.notion_config import NotionConfig
-from notion.service import NotionService
+from src.config.notion_config import NotionConfig
+from src.notion.service import NotionService
 
 
 def main():
