@@ -4,6 +4,7 @@ import sys
 
 from src.config.notion_config import NotionConfig
 from src.notion.service import NotionService
+from src.downloader.service import DownloaderService
 
 
 def main():
@@ -19,6 +20,9 @@ def main():
     )
     exported = notion_service.get_exported_url(notion_url)
     print(exported)
+
+    download_service = DownloaderService()
+    download_service.download_file(exported, download_path="./tmp")
 
 
 if __name__ == "__main__":

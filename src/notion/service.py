@@ -10,10 +10,8 @@
 
 from src.notion.repository import NotionRepository
 from src.notion.model import ExportedURLPayload
-from src.constants.const import NOTION_TOKEN_COOKIE_STR, NOTION_TOKEN_INVALID
-import json
+from src.constants.const import NOTION_TOKEN_INVALID
 import re
-import requests
 from time import sleep
 
 
