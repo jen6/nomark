@@ -1,8 +1,12 @@
 from io import BytesIO
+from typing import List
 import zipfile
+from functools import reduce
 
 import requests
 from requests.sessions import session
+
+from src.downloader.model import DownloadInfo
 
 
 class DownloaderService:
@@ -17,7 +21,16 @@ class DownloaderService:
                 file_buffer.write(chunk)
         return file_buffer
 
-    def download_file(self, download_url: str, download_path: str = "./") -> str:
+    def download_file(
+        self, download_url: str, download_path: str = "./"
+    ) -> DownloadInfo:
         file_buffer = self._download_file(download_url)
         zf = zipfile.ZipFile(file_buffer)
+        file_name_list: List[str] = reduce(
+            lambda result, zipinfo: result + [zipinfo.filename], zf.filelist, []
+        )
+
         zf.extractall(path=download_path)
+        zf.close()
+
+        return DownloadInfo(download_path, file_name_list)

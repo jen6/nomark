@@ -22,7 +22,9 @@ def main():
     print(exported)
 
     download_service = DownloaderService()
-    download_service.download_file(exported, download_path="./tmp")
+    download_info = download_service.download_file(exported, download_path="./tmp")
+    print(download_info.download_files)
+    print(download_info.representative_file)
 
 
 if __name__ == "__main__":
