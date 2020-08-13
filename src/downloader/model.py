@@ -4,16 +4,19 @@ from pathlib import Path
 
 
 class DownloadInfo:
-    download_files: List[Path]
-    representative_file: Optional[Path]
+    base_path: Path
+    images: List[Path] = []
+    markdwons: List[Path] = []
 
     def __init__(self, base_path_str: str, filelist: List[str]):
-        self.download_files = []
-        self.representative_file = None
-        base_path = Path(base_path_str)
+        self.base_path = Path(base_path_str)
 
         for filename in filelist:
-            file_path = base_path.joinpath(Path(filename))
-            self.download_files.append(file_path)
-            if ".md" in filename and self.representative_file is None:
-                self.representative_file = file_path
+            file_path = Path(filename)
+            print(file_path, file_path.suffix)
+            if file_path.suffix in [".jpg", ".png"]:
+                self.images.append(file_path)
+                print(self.images)
+            elif ".md" in file_path.suffix:
+                self.markdwons.append(file_path)
+                print(self.markdwons)

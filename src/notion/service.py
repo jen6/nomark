@@ -24,10 +24,13 @@ class NotionService(object):
         self._notion_token: str = notion_cookie_token
 
     def _url_to_block_id(self, page_url: str) -> str:
-        matched = re.match(r"^https://www.notion.so/[^/]+/([0-9A-Fa-f]+)$", page_url)
-        if not matched or not matched.group(1):
+        matched = re.findall(
+            r"^https://www\.notion\.so/[^/]+/.*-([0-9A-Fa-f]+)$", page_url
+        )
+        print(matched)
+        if not matched or len(matched) is not 1:
             raise ValueError("Illegal notion URL: {}".format(page_url))
-        s = matched.group(1)
+        s = matched[0]
         chunks = [s[4 * i : 4 * i + 4] for i in range(0, len(s) // 4)]
         return "{}{}-{}-{}-{}-{}{}{}".format(*chunks)
 
