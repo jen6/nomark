@@ -30,19 +30,14 @@ def main():
     markdown_service = MarkdownService()
 
     exported = notion_service.get_exported_url(notion_url)
-    print(exported)
 
     download_info = download_service.download_file(exported, download_path="./tmp")
-
-    print(download_info.images)
-    print(download_info.markdwons)
 
     image_mapping = {}
     for image in download_info.images:
         relative_path_image = Path.joinpath(download_info.base_path, image)
         image_url = gdrive_service.upload_img(str(relative_path_image))
         image_mapping[str(image)] = image_url
-    print(image_mapping)
 
     markdown_service.add_line_feeder(ImageSubstitutionLineFeeder(image_mapping))
 

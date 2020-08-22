@@ -7,10 +7,12 @@ from googleapiclient.discovery import build
 
 
 class GdriveService:
-    def __init__(self, config: GdriveConfig):
+    def __init__(self, config: GdriveConfig, api_service=None):
         self._credit = config.credit
         self._base_folder = config.blog_folder
-        self._service = build("drive", "v3", credentials=self._credit)
+        self._service = api_service
+        if self._service is None:
+            self._service = build("drive", "v3", credentials=self._credit)
         self._target_folder_id = self._check_create_folder()
 
     def _check_create_folder(self) -> str:

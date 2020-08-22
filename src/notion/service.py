@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-
-# Fetches an archive with markdown using Notion API
-#
-# Expects a Notion token in the `NOTION_TOKEN` environment variable.
-# Get this token from your browser’s cookies.
-#
-# Usage: NOTION_TOKEN=<token> ./notion.py <page-url>
-#
-
 from src.notion.repository import NotionRepository
 from src.notion.model import ExportedURLPayload
 from src.constants.const import NOTION_TOKEN_INVALID
@@ -27,7 +17,7 @@ class NotionService(object):
         matched = re.findall(
             r"^https://www\.notion\.so/[^/]+/.*-([0-9A-Fa-f]+)$", page_url
         )
-        print(matched)
+
         if not matched or len(matched) is not 1:
             raise ValueError("Illegal notion URL: {}".format(page_url))
         s = matched[0]
