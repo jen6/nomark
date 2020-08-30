@@ -1,6 +1,7 @@
 #!python3
 import os
 from pathlib import Path
+import shutil
 import sys
 
 from src.config.gdrive_config import GdriveConfig
@@ -12,6 +13,7 @@ from src.markdown.service import MarkdownService
 from src.notion.repository import NotionRepository
 from src.notion.service import NotionService
 
+TMP_PATH = "./nomark-tmp"
 
 def main():
     if len(sys.argv) != 2:
@@ -34,7 +36,7 @@ def main():
     gdrive_config = GdriveConfig(article_title)
     gdrive_service = GdriveService(gdrive_config)
 
-    download_info = download_service.download_file(exported, download_path="./tmp")
+    download_info = download_service.download_file(exported, download_path=TMP_PATH)
 
     image_mapping = {}
     for image in download_info.images:
@@ -49,6 +51,7 @@ def main():
             Path.joinpath(download_info.base_path, markdown), markdown
         )
 
+    shutil.rmtree(Path(TMP_PATH))
 
 if __name__ == "__main__":
     main()
