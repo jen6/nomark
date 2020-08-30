@@ -19,24 +19,26 @@ def main():
     notion_url = sys.argv[1]
 
     notion_config = NotionConfig(env=os.environ)
-    gdrive_config = GdriveConfig()
 
     notion_repo = NotionRepository()
     notion_service = NotionService(
         notion_cookie_token=notion_config.token_v2, notion_repo=notion_repo
     )
     download_service = DownloaderService()
-    gdrive_service = GdriveService(gdrive_config)
     markdown_service = MarkdownService()
 
     exported = notion_service.get_exported_url(notion_url)
+    article_title = notion_service.get_article_title(notion_url)
+
+    gdrive_config = GdriveConfig(article_title)
+    gdrive_service = GdriveService(gdrive_config)
 
     download_info = download_service.download_file(exported, download_path="./tmp")
 
     image_mapping = {}
     for image in download_info.images:
         relative_path_image = Path.joinpath(download_info.base_path, image)
-        image_url = gdrive_service.upload_img(str(relative_path_image))
+        image_url = gdrive_service.upload_img(image.name, str(relative_path_image))
         image_mapping[str(image)] = image_url
 
     markdown_service.add_line_feeder(ImageSubstitutionLineFeeder(image_mapping))

@@ -15,12 +15,12 @@ class NotionService(object):
 
     def _url_to_block_id(self, page_url: str) -> str:
         matched = re.findall(
-            r"^https://www\.notion\.so/[^/]+/.*-([0-9A-Fa-f]+)$", page_url
+            r"^https://www\.notion\.so/([^/]+/)?.*-([0-9A-Fa-f]+)$", page_url
         )
 
         if not matched or len(matched) is not 1:
             raise ValueError("Illegal notion URL: {}".format(page_url))
-        s = matched[0]
+        s = matched[0][1]
         chunks = [s[4 * i : 4 * i + 4] for i in range(0, len(s) // 4)]
         return "{}{}-{}-{}-{}-{}{}{}".format(*chunks)
 
@@ -49,3 +49,14 @@ class NotionService(object):
         if not url:
             raise Exception("Unexpected task result: {}".format(result))
         return url
+
+    def get_article_title(self, page_url: str):
+        block_id = self._url_to_block_id(page_url)
+
+        result = self._notion_repo.get_back_link(
+            token=self._notion_token, block_id=block_id
+        )
+        title_list = result.get("value", {}).get("properties", {}).get("title", [])
+        if len(title_list) == 0:
+            raise ValueError("No title")
+        return title_list[0][0]

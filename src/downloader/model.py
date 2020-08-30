@@ -13,10 +13,7 @@ class DownloadInfo:
 
         for filename in filelist:
             file_path = Path(filename)
-            print(file_path, file_path.suffix)
             if file_path.suffix in [".jpg", ".png"]:
                 self.images.append(file_path)
-                print(self.images)
             elif ".md" in file_path.suffix:
                 self.markdwons.append(file_path)
-                print(self.markdwons)

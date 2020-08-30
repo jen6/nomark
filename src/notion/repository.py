@@ -8,6 +8,7 @@ from typing import Optional
 class NotionRepository:
     ENQUEUE_TASK_URL: str = "https://www.notion.so/api/v3/enqueueTask"
     GET_TASK_URL: str = "https://www.notion.so/api/v3/getTasks"
+    GET_BACK_LINK: str = "https://www.notion.so/api/v3/getBacklinksForBlock"
 
     def __init__(self, requests_session: Optional[Session] = None, timeout: int = 10):
         self._session = requests_session or requests.session()
@@ -40,3 +41,15 @@ class NotionRepository:
         )
         result = resp.json()["results"][0]
         return (result["state"], result.get("status", None))
+
+    def get_back_link(self, token: str, block_id: str):
+        payload = {"blockId": block_id}
+        resp = self._session.post(
+            self.GET_BACK_LINK,
+            cookies={NOTION_TOKEN_COOKIE_STR: token},
+            json=payload,
+            timeout=self._timeout,
+        )
+
+        result = resp.json()
+        return result.get("recordMap", {}).get("block", {}).get(block_id, {})

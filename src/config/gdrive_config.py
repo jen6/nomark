@@ -1,4 +1,5 @@
 from typing import Optional
+from urllib.parse import quote_plus
 from requests.sessions import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -14,8 +15,9 @@ class GdriveConfig:
 
     blog_folder: str
 
-    def __init__(self, image_folder: str = "imghosting"):
-        self.blog_folder = image_folder
+    def __init__(self, article_title: str, image_folder: str = "imghosting"):
+        self.article_title = quote_plus(article_title)
+        self.blog_folder = quote_plus(image_folder)
         self.credit = self.get_credit()
 
     def get_credit(self):
