@@ -2,9 +2,9 @@ import json
 from unittest.mock import MagicMock, Mock
 from googleapiclient.discovery import build
 from googleapiclient.http import HttpMock, HttpMockSequence
-from config.gdrive_config import GdriveConfig
+from nomark.config.gdrive_config import GdriveConfig
 
-from gdrive.service import GdriveService
+from nomark.gdrive.service import GdriveService
 
 
 class TestGdrive:

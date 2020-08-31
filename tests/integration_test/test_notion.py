@@ -1,5 +1,5 @@
-from src.notion.service import NotionService
-from src.notion.repository import NotionRepository
+from nomark.notion.service import NotionService
+from nomark.notion.repository import NotionRepository
 from unittest import TestCase
 from uuid import uuid4
 from unittest.mock import MagicMock, call

@@ -1,7 +1,7 @@
 import requests
 from requests.sessions import Session
-from src.constants.const import NOTION_TOKEN_COOKIE_STR
-from src.notion.model import ExportedURLPayload
+from nomark.constants.const import NOTION_TOKEN_COOKIE_STR
+from nomark.notion.model import ExportedURLPayload
 from typing import Optional
 
 

@@ -6,7 +6,7 @@ from functools import reduce
 import requests
 from requests.sessions import session
 
-from src.downloader.model import DownloadInfo
+from nomark.downloader.model import DownloadInfo
 
 
 class DownloaderService:

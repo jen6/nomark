@@ -1,6 +1,6 @@
-from src.notion.repository import NotionRepository
-from src.notion.model import ExportedURLPayload
-from src.constants.const import NOTION_TOKEN_INVALID
+from nomark.notion.repository import NotionRepository
+from nomark.notion.model import ExportedURLPayload
+from nomark.constants.const import NOTION_TOKEN_INVALID
 import re
 from time import sleep
 

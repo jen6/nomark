@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 from urllib.parse import unquote
-from src.markdown.service import LineFeeder
+from nomark.markdown.service import LineFeeder
 
 
 class ImageSubstitutionLineFeeder(LineFeeder):

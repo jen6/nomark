@@ -1,5 +1,5 @@
 from typing import Mapping
-from src.constants.const import NOTION_TOKEN_ENV_STR
+from nomark.constants.const import NOTION_TOKEN_ENV_STR
 
 
 class NotionConfig:

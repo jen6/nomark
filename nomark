@@ -3,15 +3,15 @@ import os
 from pathlib import Path
 import shutil
 import sys
+from nomark.notion.service import NotionService
 
-from src.config.gdrive_config import GdriveConfig
-from src.config.notion_config import NotionConfig
-from src.downloader.service import DownloaderService
-from src.gdrive.service import GdriveService
-from src.markdown.image_substitution_feeder import ImageSubstitutionLineFeeder
-from src.markdown.service import MarkdownService
-from src.notion.repository import NotionRepository
-from src.notion.service import NotionService
+from nomark.config.gdrive_config import GdriveConfig
+from nomark.config.notion_config import NotionConfig
+from nomark.downloader.service import DownloaderService
+from nomark.gdrive.service import GdriveService
+from nomark.markdown.image_substitution_feeder import ImageSubstitutionLineFeeder
+from nomark.markdown.service import MarkdownService
+from nomark.notion.repository import NotionRepository
 
 TMP_PATH = "./nomark-tmp"
 

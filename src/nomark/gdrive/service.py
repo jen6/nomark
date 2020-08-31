@@ -1,6 +1,6 @@
 from googleapiclient.http import MediaFileUpload
-from src.gdrive.query_builder import FileType, QueryBuilder
-from src.config.gdrive_config import GdriveConfig
+from nomark.gdrive.query_builder import FileType, QueryBuilder
+from nomark.config.gdrive_config import GdriveConfig
 from urllib.parse import unquote, unquote_plus
 import hashlib
 
